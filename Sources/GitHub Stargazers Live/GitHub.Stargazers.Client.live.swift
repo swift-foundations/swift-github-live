@@ -34,7 +34,7 @@ extension GitHub.Stargazers {
     >
 }
 
-extension GitHub.Stargazers: @retroactive DependencyKey {
+extension GitHub.Stargazers: @retroactive Dependency.Key {
     public static var liveValue: GitHub.Stargazers.Authenticated {
         @Dependency(\.envVars.githubBaseUrl) var baseUrl
         @Dependency(\.envVars.githubToken) var token
@@ -49,7 +49,7 @@ extension GitHub.Stargazers: @retroactive DependencyKey {
     public static let testValue: GitHub.Stargazers.Authenticated = liveValue
 }
 
-extension GitHub.Stargazers.API.Router: @retroactive DependencyKey {
+extension GitHub.Stargazers.API.Router: @retroactive Dependency.Key {
     public static let liveValue: Self = .init()
     public static let testValue: Self = .init()
 }

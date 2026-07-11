@@ -66,7 +66,7 @@ extension GitHub.Repositories {
     >
 }
 
-extension GitHub.Repositories: @retroactive DependencyKey {
+extension GitHub.Repositories: @retroactive Dependency.Key {
     public static var liveValue: GitHub.Repositories.Authenticated {
         @Dependency(\.envVars.githubBaseUrl) var baseUrl
         @Dependency(\.envVars.githubToken) var token
@@ -80,7 +80,7 @@ extension GitHub.Repositories: @retroactive DependencyKey {
     public static let testValue: GitHub.Repositories.Authenticated = liveValue
 }
 
-extension GitHub.Repositories.API.Router: @retroactive DependencyKey {
+extension GitHub.Repositories.API.Router: @retroactive Dependency.Key {
     public static let liveValue: Self = .init()
     public static let testValue: Self = .init()
 }

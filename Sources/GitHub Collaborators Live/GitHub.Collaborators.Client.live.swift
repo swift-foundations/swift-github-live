@@ -101,7 +101,7 @@ extension GitHub.Collaborators {
     >
 }
 
-extension GitHub.Collaborators: @retroactive DependencyKey {
+extension GitHub.Collaborators: @retroactive Dependency.Key {
     public static var liveValue: GitHub.Collaborators.Authenticated {
         @Dependency(\.envVars.githubBaseUrl) var baseUrl
         @Dependency(\.envVars.githubToken) var token
@@ -115,7 +115,7 @@ extension GitHub.Collaborators: @retroactive DependencyKey {
     public static let testValue: GitHub.Collaborators.Authenticated = liveValue
 }
 
-extension GitHub.Collaborators.API.Router: @retroactive DependencyKey {
+extension GitHub.Collaborators.API.Router: @retroactive Dependency.Key {
     public static let liveValue: Self = .init()
     public static let testValue: Self = .init()
 }

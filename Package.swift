@@ -47,7 +47,10 @@ extension Target.Dependency {
         .product(name: "ServerFoundation", package: "swift-server-foundation")
     }
     static var authenticating: Self {
-        .product(name: "Authenticating", package: "swift-authenticating")
+        .product(name: "Authenticating", package: "swift-url-routing")
+    }
+    static var clocksDependency: Self {
+        .product(name: "Clocks Dependency", package: "swift-dependencies")
     }
     static var dependenciesTestSupport: Self {
         .product(name: "Dependencies Test Support", package: "swift-dependencies")
@@ -72,8 +75,12 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/swift-standards/swift-github-types.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-server-foundation.git", branch: "main"),
-        .package(url: "https://github.com/coenttb/swift-authenticating", from: "0.0.2"),
-        .package(url: "https://github.com/swift-foundations/swift-dependencies.git", branch: "main"),
+        .package(url: "https://github.com/swift-foundations/swift-url-routing.git", branch: "main"),
+        .package(
+            url: "https://github.com/swift-foundations/swift-dependencies.git",
+            branch: "main",
+            traits: ["Clocks"]
+        ),
     ],
     targets: [
         .target(
@@ -81,6 +88,7 @@ let package = Package(
             dependencies: [
                 .serverFoundation,
                 .authenticating,
+                .clocksDependency,
                 .githubTypesShared,
             ]
         ),

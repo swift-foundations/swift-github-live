@@ -58,7 +58,7 @@ extension GitHub.Traffic {
     >
 }
 
-extension GitHub.Traffic: @retroactive DependencyKey {
+extension GitHub.Traffic: @retroactive Dependency.Key {
     public static var liveValue: GitHub.Traffic.Authenticated {
         @Dependency(\.envVars.githubBaseUrl) var baseUrl
         @Dependency(\.envVars.githubToken) var token
@@ -73,7 +73,7 @@ extension GitHub.Traffic: @retroactive DependencyKey {
     public static let testValue: GitHub.Traffic.Authenticated = liveValue
 }
 
-extension GitHub.Traffic.API.Router: @retroactive DependencyKey {
+extension GitHub.Traffic.API.Router: @retroactive Dependency.Key {
     public static let liveValue: Self = .init()
     public static let testValue: Self = .init()
 }

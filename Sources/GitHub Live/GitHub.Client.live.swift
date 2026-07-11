@@ -58,7 +58,7 @@ extension GitHub {
     >
 }
 
-extension GitHub.Client: @retroactive DependencyKey {
+extension GitHub.Client: @retroactive Dependency.Key {
     public static var liveValue: GitHub.Authenticated {
         // swiftlint:disable:next force_try
         try! GitHub.Client.live()
@@ -67,12 +67,12 @@ extension GitHub.Client: @retroactive DependencyKey {
     public static let testValue: GitHub.Authenticated = liveValue
 }
 
-extension GitHub.API.Router: @retroactive DependencyKey {
+extension GitHub.API.Router: @retroactive Dependency.Key {
     public static let liveValue: Self = .init()
     public static let testValue: Self = .init()
 }
 
-extension DependencyValues {
+extension Dependency.Values {
     public var github: GitHub.Authenticated {
         get { self[GitHub.Client.self] }
         set { self[GitHub.Client.self] = newValue }

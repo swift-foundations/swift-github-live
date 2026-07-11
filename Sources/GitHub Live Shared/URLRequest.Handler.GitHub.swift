@@ -5,7 +5,7 @@
 //  Created by Coen ten Thije Boonkkamp on 22/08/2025.
 //
 
-import Clocks
+import Clocks_Dependency
 import Dependencies
 import Foundation
 import ServerFoundation
@@ -17,7 +17,7 @@ extension URLRequest.Handler {
 }
 
 /// Dependency key for GitHub throttled client that uses per-token rate limiting
-struct GitHubThrottledClientKey: DependencyKey {
+struct GitHubThrottledClientKey: Dependency.Key {
     static let liveValue = ThrottledClient<String>(
         rateLimiter: RateLimiter<String>(
             windows: [
@@ -47,14 +47,14 @@ struct GitHubThrottledClientKey: DependencyKey {
     )
 }
 
-extension DependencyValues {
+extension Dependency.Values {
     var githubThrottledClient: ThrottledClient<String> {
         get { self[GitHubThrottledClientKey.self] }
         set { self[GitHubThrottledClientKey.self] = newValue }
     }
 }
 
-extension URLRequest.Handler.GitHub: DependencyKey {
+extension URLRequest.Handler.GitHub: Dependency.Key {
 
     public static var liveValue: URLRequest.Handler { Self.default() }
 
@@ -82,7 +82,7 @@ extension URLRequest.Handler.GitHub: DependencyKey {
         retryCount: Int = 0,
         maxRetries: Int = 5
     ) async throws -> (Data, URLResponse) {
-        @Dependency(\.continuousClock) var clock
+        @Dependency(\.clock) var clock
         @Dependency(\.githubThrottledClient) var throttledClient
 
         // Extract token from Authorization header for per-token rate limiting

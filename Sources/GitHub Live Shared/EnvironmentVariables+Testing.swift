@@ -52,7 +52,7 @@ extension EnvironmentVariables {
 
 // MARK: - Context for Testing
 
-extension DependencyValues {
+extension Dependency.Values {
     struct Context: Sendable {
         enum ContextType: Sendable {
             case live
@@ -70,7 +70,7 @@ extension DependencyValues {
         set { self[ContextKey.self] = newValue }
     }
 
-    private enum ContextKey: DependencyKey {
+    private enum ContextKey: Dependency.Key {
         static let liveValue = Context.test
         static let testValue = Context.test
     }
