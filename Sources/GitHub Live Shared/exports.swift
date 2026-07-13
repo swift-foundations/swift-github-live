@@ -1,3 +1,3 @@
-@_exported import Authenticating
+@_exported import Authentication_Foundation_Integration
 @_exported import GitHub_Types_Shared
 @_exported import ServerFoundation
