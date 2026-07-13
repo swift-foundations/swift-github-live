@@ -53,7 +53,7 @@ extension Target.Dependency {
         .product(name: "URLRouting", package: "swift-url-routing")
     }
     static var clocksDependency: Self {
-        .product(name: "Clocks Dependency", package: "swift-dependencies")
+        .product(name: "Clocks Dependencies", package: "swift-clocks-dependencies")
     }
     static var dependenciesTestSupport: Self {
         .product(name: "Dependencies Test Support", package: "swift-dependencies")
@@ -80,11 +80,8 @@ let package = Package(
         .package(url: "https://github.com/swift-foundations/swift-server-foundation.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-url-routing.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-url-routing-authentication.git", branch: "main"),
-        .package(
-            url: "https://github.com/swift-foundations/swift-dependencies.git",
-            branch: "main",
-            traits: ["Clocks"]
-        ),
+        .package(url: "https://github.com/swift-foundations/swift-dependencies.git", branch: "main"),
+        .package(url: "https://github.com/swift-foundations/swift-clocks-dependencies.git", branch: "main"),
     ],
     targets: [
         .target(
