@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import ServerFoundationEnvVars
+import Environment_Dependencies
 
 // MARK: - Test Environment Variables
 

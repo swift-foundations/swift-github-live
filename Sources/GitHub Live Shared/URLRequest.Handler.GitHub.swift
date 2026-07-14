@@ -8,9 +8,10 @@
 import Clocks_Dependencies
 import Dependencies
 import Foundation
-import ServerFoundation
+import Throttling_Dependencies
+import URLRequestHandler
 
-// Note: Throttling is imported via ServerFoundation's @_exported import
+// Throttling members ride Throttling_Dependencies (W3).
 
 extension URLRequest.Handler {
     public enum GitHub {}

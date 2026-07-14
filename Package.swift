@@ -43,8 +43,14 @@ extension Target.Dependency {
         .product(name: "GitHub Types Shared", package: "swift-github-types")
     }
 
-    static var serverFoundation: Self {
-        .product(name: "ServerFoundation", package: "swift-server-foundation")
+    static var urlRequestHandler: Self {
+        .product(name: "URLRequestHandler", package: "swift-urlrequest-handler")
+    }
+    static var environmentDependencies: Self {
+        .product(name: "Environment Dependencies", package: "swift-environment-dependencies")
+    }
+    static var throttlingDependencies: Self {
+        .product(name: "Throttling Dependencies", package: "swift-throttling-dependencies")
     }
     static var authenticating: Self {
         .product(name: "Authentication Foundation Integration", package: "swift-url-routing-authentication")
@@ -77,7 +83,9 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/swift-standards/swift-github-types.git", branch: "main"),
-        .package(url: "https://github.com/swift-foundations/swift-server-foundation.git", branch: "main"),
+        .package(url: "https://github.com/swift-foundations/swift-urlrequest-handler.git", branch: "main"),
+        .package(url: "https://github.com/swift-foundations/swift-environment-dependencies.git", branch: "main"),
+        .package(url: "https://github.com/swift-foundations/swift-throttling-dependencies.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-url-routing.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-url-routing-authentication.git", branch: "main"),
         .package(url: "https://github.com/swift-foundations/swift-dependencies.git", branch: "main"),
@@ -87,7 +95,9 @@ let package = Package(
         .target(
             name: .githubLiveShared,
             dependencies: [
-                .serverFoundation,
+                .urlRequestHandler,
+                .environmentDependencies,
+                .throttlingDependencies,
                 .authenticating,
                 .clocksDependency,
                 .githubTypesShared,
@@ -96,7 +106,9 @@ let package = Package(
         .target(
             name: .githubLive,
             dependencies: [
-                .serverFoundation,
+                .urlRequestHandler,
+                .environmentDependencies,
+                .throttlingDependencies,
                 .githubLiveShared,
                 .githubTypes,
                 .githubTrafficLive,
@@ -109,7 +121,9 @@ let package = Package(
         .target(
             name: .githubTrafficLive,
             dependencies: [
-                .serverFoundation,
+                .urlRequestHandler,
+                .environmentDependencies,
+                .throttlingDependencies,
                 .githubLiveShared,
                 .githubTrafficTypes,
             ]
@@ -117,7 +131,9 @@ let package = Package(
         .target(
             name: .githubRepositoriesLive,
             dependencies: [
-                .serverFoundation,
+                .urlRequestHandler,
+                .environmentDependencies,
+                .throttlingDependencies,
                 .githubLiveShared,
                 .githubRepositoriesTypes,
             ]
@@ -125,7 +141,9 @@ let package = Package(
         .target(
             name: .githubStargazersLive,
             dependencies: [
-                .serverFoundation,
+                .urlRequestHandler,
+                .environmentDependencies,
+                .throttlingDependencies,
                 .githubLiveShared,
                 .githubStargazersTypes,
             ]
@@ -133,7 +151,9 @@ let package = Package(
         .target(
             name: .githubOAuthLive,
             dependencies: [
-                .serverFoundation,
+                .urlRequestHandler,
+                .environmentDependencies,
+                .throttlingDependencies,
                 .githubLiveShared,
                 .githubOAuthTypes,
                 .urlRouting,
@@ -142,7 +162,9 @@ let package = Package(
         .target(
             name: .githubCollaboratorsLive,
             dependencies: [
-                .serverFoundation,
+                .urlRequestHandler,
+                .environmentDependencies,
+                .throttlingDependencies,
                 .githubLiveShared,
                 .githubCollaboratorsTypes,
             ]
