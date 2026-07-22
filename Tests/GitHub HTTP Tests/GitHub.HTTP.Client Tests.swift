@@ -17,7 +17,9 @@ extension GitHub.HTTP {
                         request.target.rawValue
                             == "https://api.github.com/orgs/swiftlang/repos?type=public&per_page=100&page=1"
                     )
-                    #expect(request.headers.first("Accept")?.rawValue == "application/vnd.github+json")
+                    #expect(
+                        request.headers.first("Accept")?.rawValue == "application/vnd.github+json"
+                    )
                     #expect(request.headers.first("User-Agent")?.rawValue == "swift-institute")
                     #expect(request.headers.first("X-GitHub-Api-Version")?.rawValue == "2026-03-10")
                     #expect(request.headers.first("Authorization") == nil)
@@ -26,7 +28,7 @@ extension GitHub.HTTP {
                         status: .ok,
                         headers: [],
                         body: Self.bytes(
-                            #"[{"id":42,"name":"swift","archived":false,"visibility":"public"}]"#
+                            #"[{"id":42,"name":"swift","archived":false,"disabled":false,"fork":false,"visibility":"public"}]"#
                         )
                     )
                 },

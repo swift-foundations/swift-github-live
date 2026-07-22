@@ -7,7 +7,11 @@ import RFC_3986
 extension GitHub.HTTP.Client {
     public func repositories(
         authentication: GitHub.HTTP.Authentication
-    ) -> GitHub.Organization.Repositories.Client<GitHub.HTTP.Error<ExecutionFailure, PaginationFailure>> {
+    )
+        -> GitHub.Organization.Repositories.Client<
+            GitHub.HTTP.Error<ExecutionFailure, PaginationFailure>
+        >
+    {
         .init { request async throws(GitHub.HTTP.Error<ExecutionFailure, PaginationFailure>) in
             let path: RFC_3986.URI.Path
             do throws(RFC_3986.URI.Path.Error) {
@@ -120,6 +124,8 @@ extension GitHub.HTTP.Client {
             }
             let name = try String.deserialize(element["name"])
             let archived = try Bool.deserialize(element["archived"])
+            let disabled = try Bool.deserialize(element["disabled"])
+            let fork = try Bool.deserialize(element["fork"])
             let rawVisibility = try String.deserialize(element["visibility"])
             guard let visibility = GitHub.Repository.Visibility(rawValue: rawVisibility) else {
                 throw JSON.Error.typeMismatch(
@@ -133,6 +139,8 @@ extension GitHub.HTTP.Client {
                     id: .init(rawValue: id),
                     name: .init(rawValue: name),
                     archived: archived,
+                    disabled: disabled,
+                    fork: fork,
                     visibility: visibility
                 )
             )
