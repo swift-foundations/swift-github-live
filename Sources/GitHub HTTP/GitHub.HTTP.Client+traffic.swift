@@ -1,79 +1,168 @@
-//
-//  GitHub.Traffic.Client.live.swift
-//  swift-github-live
-//
-//  Created by Coen ten Thije Boonkkamp on 22/08/2025.
-//
+import GitHub
+import GitHub_Standard
+import JSON
 
-import GitHub_Live_Shared
-import GitHub_Traffic_Types
-
-extension GitHub.Traffic.Client {
-    public static func live(
-        makeRequest: @escaping @Sendable (_ route: GitHub.Traffic.API) throws -> URLRequest
-    ) -> Self {
-        @Dependency(URLRequest.Handler.GitHub.self) var handleRequest
-
-        return Self(
-            // https://docs.github.com/en/rest/metrics/traffic#get-repository-views
-            views: { owner, repo, per in
-                try await handleRequest(
-                    for: makeRequest(.views(owner: owner, repo: repo, per: per)),
-                    decodingTo: GitHub.Traffic.Views.Response.self
+extension GitHub.HTTP.Client {
+    public func traffic(
+        authentication: GitHub.HTTP.Authentication
+    ) -> GitHub.Repository.Traffic.Client<
+        GitHub.HTTP.Error<ExecutionFailure, Never>
+    > {
+        .init(
+            views: { request async throws(GitHub.HTTP.Error<ExecutionFailure, Never>) in
+                let parameters = request.interval.map { [("per", Optional($0.rawValue))] } ?? []
+                let httpRequest = try self.request(
+                    path: [
+                        "repos", request.owner.rawValue, request.repository.rawValue,
+                        "traffic", "views",
+                    ],
+                    query: parameters,
+                    authentication: authentication
                 )
+                let httpResponse = try await self.response(for: httpRequest)
+
+                do throws(JSON.Error) {
+                    let json = try JSON.parse(httpResponse.body ?? [])
+                    let elements = try [JSON].deserialize(json["views"])
+                    var views: [GitHub.Repository.Traffic.Views.View] = []
+                    views.reserveCapacity(elements.count)
+                    for element in elements {
+                        views.append(
+                            try .init(
+                                timestamp: Self.dateTime(element["timestamp"]),
+                                count: Self.nonnegative(
+                                    element["count"], expected: "nonnegative view count"
+                                ),
+                                uniques: Self.nonnegative(
+                                    element["uniques"],
+                                    expected: "nonnegative unique view count"
+                                )
+                            )
+                        )
+                    }
+                    return try .init(
+                        count: Self.nonnegative(json["count"], expected: "nonnegative view count"),
+                        uniques: Self.nonnegative(
+                            json["uniques"], expected: "nonnegative unique view count"
+                        ),
+                        views: views
+                    )
+                } catch {
+                    throw .json(error)
+                }
             },
-
-            // https://docs.github.com/en/rest/metrics/traffic#get-repository-clones
-            clones: { owner, repo, per in
-                try await handleRequest(
-                    for: makeRequest(.clones(owner: owner, repo: repo, per: per)),
-                    decodingTo: GitHub.Traffic.Clones.Response.self
+            clones: { request async throws(GitHub.HTTP.Error<ExecutionFailure, Never>) in
+                let parameters = request.interval.map { [("per", Optional($0.rawValue))] } ?? []
+                let httpRequest = try self.request(
+                    path: [
+                        "repos", request.owner.rawValue, request.repository.rawValue,
+                        "traffic", "clones",
+                    ],
+                    query: parameters,
+                    authentication: authentication
                 )
+                let httpResponse = try await self.response(for: httpRequest)
+
+                do throws(JSON.Error) {
+                    let json = try JSON.parse(httpResponse.body ?? [])
+                    let elements = try [JSON].deserialize(json["clones"])
+                    var clones: [GitHub.Repository.Traffic.Clones.Clone] = []
+                    clones.reserveCapacity(elements.count)
+                    for element in elements {
+                        clones.append(
+                            try .init(
+                                timestamp: Self.dateTime(element["timestamp"]),
+                                count: Self.nonnegative(
+                                    element["count"], expected: "nonnegative clone count"
+                                ),
+                                uniques: Self.nonnegative(
+                                    element["uniques"],
+                                    expected: "nonnegative unique clone count"
+                                )
+                            )
+                        )
+                    }
+                    return try .init(
+                        count: Self.nonnegative(json["count"], expected: "nonnegative clone count"),
+                        uniques: Self.nonnegative(
+                            json["uniques"], expected: "nonnegative unique clone count"
+                        ),
+                        clones: clones
+                    )
+                } catch {
+                    throw .json(error)
+                }
             },
-
-            // https://docs.github.com/en/rest/metrics/traffic#get-top-referral-paths
-            paths: { owner, repo in
-                try await handleRequest(
-                    for: makeRequest(.paths(owner: owner, repo: repo)),
-                    decodingTo: GitHub.Traffic.Paths.Response.self
+            paths: { request async throws(GitHub.HTTP.Error<ExecutionFailure, Never>) in
+                let httpRequest = try self.request(
+                    path: [
+                        "repos", request.owner.rawValue, request.repository.rawValue,
+                        "traffic", "popular", "paths",
+                    ],
+                    authentication: authentication
                 )
+                let httpResponse = try await self.response(for: httpRequest)
+
+                do throws(JSON.Error) {
+                    let elements = try [JSON].deserialize(
+                        JSON.parse(httpResponse.body ?? [])
+                    )
+                    var paths: [GitHub.Repository.Traffic.Paths.Path] = []
+                    paths.reserveCapacity(elements.count)
+                    for element in elements {
+                        paths.append(
+                            try .init(
+                                path: String.deserialize(element["path"]),
+                                title: String.deserialize(element["title"]),
+                                count: Self.nonnegative(
+                                    element["count"], expected: "nonnegative path count"
+                                ),
+                                uniques: Self.nonnegative(
+                                    element["uniques"], expected: "nonnegative unique path count"
+                                )
+                            )
+                        )
+                    }
+                    return .init(paths: paths)
+                } catch {
+                    throw .json(error)
+                }
             },
-
-            // https://docs.github.com/en/rest/metrics/traffic#get-top-referral-sources
-            referrers: { owner, repo in
-                try await handleRequest(
-                    for: makeRequest(.referrers(owner: owner, repo: repo)),
-                    decodingTo: GitHub.Traffic.Referrers.Response.self
+            referrers: { request async throws(GitHub.HTTP.Error<ExecutionFailure, Never>) in
+                let httpRequest = try self.request(
+                    path: [
+                        "repos", request.owner.rawValue, request.repository.rawValue,
+                        "traffic", "popular", "referrers",
+                    ],
+                    authentication: authentication
                 )
+                let httpResponse = try await self.response(for: httpRequest)
+
+                do throws(JSON.Error) {
+                    let elements = try [JSON].deserialize(
+                        JSON.parse(httpResponse.body ?? [])
+                    )
+                    var referrers: [GitHub.Repository.Traffic.Referrers.Referrer] = []
+                    referrers.reserveCapacity(elements.count)
+                    for element in elements {
+                        referrers.append(
+                            try .init(
+                                referrer: String.deserialize(element["referrer"]),
+                                count: Self.nonnegative(
+                                    element["count"], expected: "nonnegative referrer count"
+                                ),
+                                uniques: Self.nonnegative(
+                                    element["uniques"],
+                                    expected: "nonnegative unique referrer count"
+                                )
+                            )
+                        )
+                    }
+                    return .init(referrers: referrers)
+                } catch {
+                    throw .json(error)
+                }
             }
         )
     }
-}
-
-extension GitHub.Traffic {
-    public typealias Authenticated = GitHub_Live_Shared.Authenticated<
-        GitHub.Traffic.API,
-        GitHub.Traffic.API.Router,
-        GitHub.Traffic.Client
-    >
-}
-
-extension GitHub.Traffic: @retroactive Dependency.Key {
-    public static var liveValue: GitHub.Traffic.Authenticated {
-        @Dependency(\.envVars.githubBaseUrl) var baseUrl
-        @Dependency(\.envVars.githubToken) var token
-
-        // swiftlint:disable:next force_try
-        return try! GitHub.Traffic.Authenticated(
-            baseURL: baseUrl,
-            token: token
-        ) { .live(makeRequest: $0) }
-    }
-
-    public static let testValue: GitHub.Traffic.Authenticated = liveValue
-}
-
-extension GitHub.Traffic.API.Router: @retroactive Dependency.Key {
-    public static let liveValue: Self = .init()
-    public static let testValue: Self = .init()
 }

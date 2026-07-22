@@ -43,7 +43,7 @@ extension GitHub.HTTP {
                         )
                     )
                 },
-                pagination: .init { _, _ in nil }
+                pagination: .init { _ in nil }
             )
             let client = http.repositories(authentication: .none)
             let page = try await client.page(Self.request)

@@ -90,11 +90,20 @@ extension GitHub.HTTP.Client {
                 throw .json(error)
             }
 
-            let next: GitHub.Organization.Repositories.Request?
+            let nextPage: GitHub.Page.Number?
             do throws(PaginationFailure) {
-                next = try self.pagination.next(httpResponse.headers, request)
+                nextPage = try self.pagination.next(httpResponse.headers)
             } catch {
                 throw .pagination(error)
+            }
+
+            let next = nextPage.map {
+                GitHub.Organization.Repositories.Request(
+                    organization: request.organization,
+                    type: request.type,
+                    page: $0,
+                    size: request.size
+                )
             }
 
             return .init(response: response, next: next)

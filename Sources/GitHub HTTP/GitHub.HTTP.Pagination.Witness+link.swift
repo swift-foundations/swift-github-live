@@ -5,7 +5,7 @@ import RFC_8288
 
 extension GitHub.HTTP.Pagination.Witness where Failure == GitHub.HTTP.Pagination.Error {
     /// RFC 8288 `Link` field pagination for GitHub REST responses.
-    public static let link = Self { headers, request throws(GitHub.HTTP.Pagination.Error) in
+    public static let link = Self { headers throws(GitHub.HTTP.Pagination.Error) in
         let links: [RFC_8288.Link]
         do throws(RFC_8288.Link.Parse.Error) {
             links = try RFC_8288.Link.Parse()(headers)
@@ -27,11 +27,6 @@ extension GitHub.HTTP.Pagination.Witness where Failure == GitHub.HTTP.Pagination
             throw .page(.invalid(raw))
         }
 
-        return .init(
-            organization: request.organization,
-            type: request.type,
-            page: page,
-            size: request.size
-        )
+        return page
     }
 }

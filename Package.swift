@@ -18,14 +18,11 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/swift-foundations/swift-github.git", branch: "main"),
+        .package(path: "../swift-github"),
         .package(url: "https://github.com/swift-foundations/swift-json.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-3986.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-8288.git", branch: "main"),
-        .package(
-            url: "https://github.com/swift-standards/swift-github-standard.git",
-            branch: "main"
-        ),
+        .package(path: "../../swift-standards/swift-github-standard"),
         .package(
             url: "https://github.com/swift-standards/swift-http-standard.git",
             branch: "main"

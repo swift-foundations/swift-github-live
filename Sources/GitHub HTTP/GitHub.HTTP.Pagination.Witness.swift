@@ -1,20 +1,12 @@
-import GitHub
 import HTTP_Standard
+import GitHub_Standard
 
 extension GitHub.HTTP.Pagination {
     public struct Witness<Failure: Swift.Error & Sendable>: Sendable {
-        public var next:
-            @Sendable (
-                HTTP.Headers,
-                GitHub.Organization.Repositories.Request
-            ) throws(Failure) -> GitHub.Organization.Repositories.Request?
+        public var next: @Sendable (HTTP.Headers) throws(Failure) -> GitHub.Page.Number?
 
         public init(
-            next:
-                @escaping @Sendable (
-                    HTTP.Headers,
-                    GitHub.Organization.Repositories.Request
-                ) throws(Failure) -> GitHub.Organization.Repositories.Request?
+            next: @escaping @Sendable (HTTP.Headers) throws(Failure) -> GitHub.Page.Number?
         ) {
             self.next = next
         }
