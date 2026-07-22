@@ -14,6 +14,8 @@ HTTP bindings for the typed GitHub operations published by `swift-github`.
 - user and organization repository pagination;
 - repository stargazer pagination;
 - repository traffic views, clones, paths, and referrers;
+- OAuth authorization and token exchange;
+- authenticated-user profile and email operations;
 - injected HTTP execution for deterministic, credential-free tests.
 
 ## Installation
@@ -60,6 +62,12 @@ let views = try await traffic.views(
 `GitHub Standard` owns provider vocabulary and wire-shaped values. `GitHub` owns typed operation clients and bounded traversal. `GitHub HTTP` owns request construction, response decoding, authentication headers, and RFC 8288 pagination witnesses.
 
 Traffic and Stargazers remain separate provider domains: Traffic describes repository analytics aggregates, while Stargazers describes user-attributed starring events.
+
+OAuth authorization and token exchange are exposed at
+`client.oauth.authorization` and `client.oauth.token.exchange`. The supporting
+Users API operations remain `client.user.authenticated.get` and
+`client.user.authenticated.emails.list`. Token exchange uses the canonical HTML
+form coder and HTTP body coupling; no configured-live transport is included.
 
 ## Testing
 

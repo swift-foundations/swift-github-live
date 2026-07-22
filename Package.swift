@@ -19,12 +19,24 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../swift-github"),
+        .package(
+            url: "https://github.com/swift-foundations/swift-html-form-coder.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-foundations/swift-http-body.git",
+            branch: "main"
+        ),
         .package(url: "https://github.com/swift-foundations/swift-json.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-3986.git", branch: "main"),
         .package(url: "https://github.com/swift-ietf/swift-rfc-8288.git", branch: "main"),
         .package(path: "../../swift-standards/swift-github-standard"),
         .package(
             url: "https://github.com/swift-standards/swift-http-standard.git",
+            branch: "main"
+        ),
+        .package(
+            url: "https://github.com/swift-standards/swift-html-standard.git",
             branch: "main"
         ),
     ],
@@ -34,6 +46,9 @@ let package = Package(
             dependencies: [
                 .product(name: "GitHub", package: "swift-github"),
                 .product(name: "GitHub Standard", package: "swift-github-standard"),
+                .product(name: "HTML Form Coder", package: "swift-html-form-coder"),
+                .product(name: "HTML Standard", package: "swift-html-standard"),
+                .product(name: "HTTP Body", package: "swift-http-body"),
                 .product(name: "HTTP Standard", package: "swift-http-standard"),
                 .product(name: "JSON", package: "swift-json"),
                 .product(name: "RFC 3986", package: "swift-rfc-3986"),

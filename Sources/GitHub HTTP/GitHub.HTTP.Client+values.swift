@@ -1,3 +1,4 @@
+import EmailAddress_Standard
 import GitHub
 import GitHub_Standard
 import JSON
@@ -5,6 +6,24 @@ import RFC_3339
 import RFC_3986
 
 extension GitHub.HTTP.Client {
+    static func emailAddress(_ json: JSON) throws(JSON.Error) -> EmailAddress {
+        let raw = try String.deserialize(json)
+        do throws(EmailAddress.Error) {
+            return try .init(raw)
+        } catch {
+            throw .typeMismatch(expected: "email address", got: raw)
+        }
+    }
+
+    static func emailAddressIfPresent(_ json: JSON) throws(JSON.Error) -> EmailAddress? {
+        guard let raw = try String?.deserialize(json) else { return nil }
+        do throws(EmailAddress.Error) {
+            return try .init(raw)
+        } catch {
+            throw .typeMismatch(expected: "email address or null", got: raw)
+        }
+    }
+
     static func nonnegative(
         _ json: JSON,
         expected: String
