@@ -10,13 +10,13 @@ extension GitHub.HTTP {
         public let agent: Agent
         public let version: Version
         public var execute: @Sendable (HTTP.Request) async throws(ExecutionFailure) -> HTTP.Response
-        public var pagination: Pagination<PaginationFailure>
+        public var pagination: Pagination.Witness<PaginationFailure>
 
         public init(
             agent: Agent,
             version: Version,
             execute: @escaping @Sendable (HTTP.Request) async throws(ExecutionFailure) -> HTTP.Response,
-            pagination: Pagination<PaginationFailure>
+            pagination: Pagination.Witness<PaginationFailure>
         ) {
             self.agent = agent
             self.version = version

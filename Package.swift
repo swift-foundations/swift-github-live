@@ -21,6 +21,7 @@ let package = Package(
         .package(path: "../swift-github"),
         .package(path: "../swift-json"),
         .package(path: "../../swift-ietf/swift-rfc-3986"),
+        .package(path: "../../swift-ietf/swift-rfc-8288"),
         .package(path: "../../swift-standards/swift-github-types"),
         .package(path: "../../swift-standards/swift-http-standard"),
     ],
@@ -33,6 +34,7 @@ let package = Package(
                 .product(name: "HTTP Standard", package: "swift-http-standard"),
                 .product(name: "JSON", package: "swift-json"),
                 .product(name: "RFC 3986", package: "swift-rfc-3986"),
+                .product(name: "RFC 8288", package: "swift-rfc-8288"),
             ]
         ),
         .testTarget(
