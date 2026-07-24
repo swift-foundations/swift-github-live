@@ -60,10 +60,10 @@ extension GitHub.HTTP {
             #expect(page.response.repositories.count == 1)
             // swift-linter:disable:next raw value access
             // REASON: wire-shape assertion — typed value's wire form compared against expected wire literal ([PATTERN-017] boundary use, test-side of ruling class 3).
-            #expect(page.response.repositories.first?.id.rawValue == 42)
+            #expect(page.response.repositories.first?.id.underlying == 42)
             // swift-linter:disable:next raw value access
             // REASON: wire-shape assertion — typed value's wire form compared against expected wire literal ([PATTERN-017] boundary use, test-side of ruling class 3).
-            #expect(page.response.repositories.first?.name.rawValue == "swift")
+            #expect(page.response.repositories.first?.name.underlying == "swift")
         }
 
         @Test("Authentication is injected explicitly into the HTTP adapter")
@@ -87,7 +87,7 @@ extension GitHub.HTTP {
         }
 
         private static let request = GitHub.Organization.Repositories.Request(
-            organization: .init(rawValue: "swiftlang"),
+            organization: .init("swiftlang"),
             type: .public,
             page: .first,
             size: .maximum

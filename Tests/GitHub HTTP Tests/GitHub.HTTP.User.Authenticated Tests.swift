@@ -31,7 +31,7 @@ extension GitHub.HTTP.User.Authenticated {
 
             // swift-linter:disable:next raw value access
             // REASON: wire-shape assertion — typed value's wire form compared against expected wire literal ([PATTERN-017] boundary use, test-side of ruling class 3).
-            #expect(response.user.login.rawValue == "octocat")
+            #expect(response.user.login.underlying == "octocat")
             #expect(response.user.email == nil)
             #expect(response.user.publicRepos == 8)
         }

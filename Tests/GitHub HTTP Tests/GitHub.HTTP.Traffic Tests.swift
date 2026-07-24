@@ -51,8 +51,8 @@ extension GitHub.HTTP {
                 pagination: .none
             )
             let client = http.traffic(authentication: .none)
-            let owner = GitHub.Owner.Login(rawValue: "swiftlang")
-            let repository = GitHub.Repository.Name(rawValue: "swift")
+            let owner = GitHub.Owner.Login("swiftlang")
+            let repository = GitHub.Repository.Name("swift")
 
             let views = try await client.views(
                 .init(owner: owner, repository: repository, interval: .day)
@@ -90,8 +90,8 @@ extension GitHub.HTTP {
             do throws(GitHub.HTTP.Error<Fixture.Execution, Never>) {
                 _ = try await http.traffic(authentication: .none).views(
                     .init(
-                        owner: .init(rawValue: "swiftlang"),
-                        repository: .init(rawValue: "swift")
+                        owner: .init("swiftlang"),
+                        repository: .init("swift")
                     )
                 )
                 Issue.record("Expected a typed JSON conversion failure")

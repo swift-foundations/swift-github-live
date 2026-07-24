@@ -40,8 +40,8 @@ extension GitHub.HTTP {
             )
             let page = try await http.stargazers(authentication: .none).page(
                 .init(
-                    owner: .init(rawValue: "swiftlang"),
-                    repository: .init(rawValue: "swift"),
+                    owner: .init("swiftlang"),
+                    repository: .init("swift"),
                     page: .first,
                     size: .maximum
                 )
@@ -49,13 +49,13 @@ extension GitHub.HTTP {
 
             // swift-linter:disable:next raw value access
             // REASON: wire-shape assertion — typed value's wire form compared against expected wire literal ([PATTERN-017] boundary use, test-side of ruling class 3).
-            #expect(page.response.stargazers.first?.user.login.rawValue == "octocat")
+            #expect(page.response.stargazers.first?.user.login.underlying == "octocat")
             // swift-linter:disable:next raw value access
             // REASON: wire-shape assertion — typed value's wire form compared against expected wire literal ([PATTERN-017] boundary use, test-side of ruling class 3).
-            #expect(page.next?.owner.rawValue == "swiftlang")
+            #expect(page.next?.owner.underlying == "swiftlang")
             // swift-linter:disable:next raw value access
             // REASON: wire-shape assertion — typed value's wire form compared against expected wire literal ([PATTERN-017] boundary use, test-side of ruling class 3).
-            #expect(page.next?.repository.rawValue == "swift")
+            #expect(page.next?.repository.underlying == "swift")
             // swift-linter:disable:next raw value access
             // REASON: wire-shape assertion — typed value's wire form compared against expected wire literal ([PATTERN-017] boundary use, test-side of ruling class 3).
             #expect(page.next?.page?.rawValue == 2)

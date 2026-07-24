@@ -66,8 +66,8 @@ extension GitHub.HTTP {
             guard let path = GitHub.Repository.Content.Path(segments: ["Package.swift"])
             else { throw .unexpected }
             return .init(
-                organization: .init(rawValue: "swift-foundations"),
-                repository: .init(rawValue: "swift-github"),
+                organization: .init("swift-foundations"),
+                repository: .init("swift-github"),
                 path: path
             )
         }

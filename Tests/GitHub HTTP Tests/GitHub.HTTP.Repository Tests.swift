@@ -22,17 +22,17 @@ extension GitHub.HTTP {
             )
             let response = try await http.repository(authentication: .none).get(
                 .init(
-                    owner: .init(rawValue: "swiftlang"),
-                    repository: .init(rawValue: "swift")
+                    owner: .init("swiftlang"),
+                    repository: .init("swift")
                 )
             )
 
             // swift-linter:disable:next raw value access
             // REASON: wire-shape assertion — typed value's wire form compared against expected wire literal ([PATTERN-017] boundary use, test-side of ruling class 3).
-            #expect(response.repository.id.rawValue == 42)
+            #expect(response.repository.id.underlying == 42)
             // swift-linter:disable:next raw value access
             // REASON: wire-shape assertion — typed value's wire form compared against expected wire literal ([PATTERN-017] boundary use, test-side of ruling class 3).
-            #expect(response.repository.owner.login.rawValue == "swiftlang")
+            #expect(response.repository.owner.login.underlying == "swiftlang")
             #expect(response.repository.stargazersCount == 70_000)
             #expect(response.repository.license?.spdxID == "Apache-2.0")
             // swift-linter:disable:next raw value access
